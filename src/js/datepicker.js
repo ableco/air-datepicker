@@ -1107,6 +1107,7 @@
             _this.$el
                 .off('.adp')
                 .data('datepicker', '');
+            containerBuilt = false;
 
             _this.selectedDates = [];
             _this.focused = '';
