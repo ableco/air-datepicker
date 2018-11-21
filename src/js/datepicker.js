@@ -2,7 +2,7 @@
     var VERSION = '2.2.3',
         pluginName = 'datepicker',
         autoInitSelector = '.datepicker-here',
-        $body, $datepickersContainer,
+        $domContainer, $datepickersContainer,
         containerBuilt = false,
         baseTemplate = '' +
             '<div class="datepicker">' +
@@ -104,14 +104,24 @@
         },
         datepicker;
 
+    /**
+     * @param {object} options - Initial props as key/value pairs
+     * @param {string} options.renderTo - datepicker's DOM Container
+     *                                    defaults to 'body' tag.
+     */
     var Datepicker  = function (el, options) {
         this.el = el;
         this.$el = $(el);
-
-        this.opts = $.extend(true, {}, defaults, options, this.$el.data());
-
-        if ($body == undefined) {
-            $body = $('body');
+        this.opts = $.extend(
+          true,
+          { renderTo: "body" },
+          defaults,
+          options,
+          this.$el.data()
+        );
+        $domContainer = $(this.opts.renderTo);
+        if ($domContainer.length === 0) {
+          throw "Invalid container element provided";
         }
 
         if (!this.opts.startDate) {
@@ -270,7 +280,7 @@
 
         _buildDatepickersContainer: function () {
             containerBuilt = true;
-            $body.append('<div class="datepickers-container" id="datepickers-container"></div>');
+            $domContainer.append('<div class="datepickers-container" id="datepickers-container"></div>');
             $datepickersContainer = $('#datepickers-container');
         },
 
